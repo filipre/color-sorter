@@ -1,5 +1,4 @@
 from collections import namedtuple
-import copy
 
 Color = namedtuple("Color", "name height")
 Flask = list[Color]
@@ -16,8 +15,6 @@ def main(flasks: Flasks):
     mem = set()
 
     def solve(state: Flasks, log, memory) -> bool:
-        # print(log)
-
         snapshot = render(state)
         if snapshot in memory:
             return False
@@ -118,16 +115,6 @@ def pour(origin: int, target: int, flasks: Flasks, log: list):
 
 
 def unpour(flasks: Flasks, log: list[Entry]):
-    """
-    >pour
-    _   _           _   G
-    _   G           _   G
-    _   G           _   G
-    G   B           _   B
-    -----           -----
-    o   t           o   t       log: (G, o, t, 1, 2)
-
-    """
     entry = log.pop()
     origin, origin_color, target, target_color = entry
 
