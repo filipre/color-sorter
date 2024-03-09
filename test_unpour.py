@@ -12,13 +12,11 @@ def test_unpour_empty_flask():
     """
     flasks = [[], [Color("green", 3)]]
     log = [(0, Color("green", 3), 1, None)]
-    log_set = set(log)
 
-    unpour(flasks, log, log_set)
+    unpour(flasks, log)
 
     assert flasks == [[Color("green", 3)], []]
     assert log == []
-    assert log_set == set()
 
 
 def test_unpour_two_colors():
@@ -32,13 +30,11 @@ def test_unpour_two_colors():
     """
     flasks = [[Color("blue", 2)], [Color("green", 1)]]
     log = [(0, Color("green", 1), 1, None)]
-    log_set = set(log)
 
-    unpour(flasks, log, log_set)
+    unpour(flasks, log)
 
     assert flasks == [[Color("blue", 2), Color("green", 1)], []]
     assert log == []
-    assert log_set == set()
 
 
 def test_unpour_both_flasks_are_not_empty():
@@ -52,10 +48,8 @@ def test_unpour_both_flasks_are_not_empty():
     """
     flasks = [[Color("blue", 2)], [Color("green", 2)]]
     log = [(0, Color("green", 1), 1, Color("green", 1))]
-    log_set = set(log)
 
-    unpour(flasks, log, log_set)
+    unpour(flasks, log)
 
     assert flasks == [[Color("blue", 2), Color("green", 1)], [Color("green", 1)]]
     assert log == []
-    assert log_set == set()

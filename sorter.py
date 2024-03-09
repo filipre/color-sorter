@@ -13,10 +13,9 @@ def main(flasks: Flasks):
     n = len(flasks)
 
     log0 = []
-    log_set0 = set()
     mem = set()
 
-    def solve(state: Flasks, log, log_set, memory) -> bool:
+    def solve(state: Flasks, log, memory) -> bool:
         # print(log)
 
         snapshot = render(state)
@@ -31,26 +30,26 @@ def main(flasks: Flasks):
 
         for i in range(n):
             for j in range(n):
-                if not can_pour(i, j, state, log_set):
+                if not can_pour(i, j, state):
                     continue
 
-                pour(i, j, state, log, log_set)
+                pour(i, j, state, log)
                 print("pour: ", render(state))
 
-                if solve(state, log, log_set, memory):
+                if solve(state, log, memory):
                     return True
 
                 # not finished but also nothing possible, undo
-                unpour(state, log, log_set)
+                unpour(state, log)
                 print("undo: ", render(state))
 
         return False
 
     # call solve
-    return solve(flasks, log0, log_set0, mem)
+    return solve(flasks, log0, mem)
 
 
-def can_pour(origin: int, target: int, flasks: Flasks, log_set: set) -> bool:
+def can_pour(origin: int, target: int, flasks: Flasks) -> bool:
     # Case 0: origin and target are the same
     if origin == target:
         return False
@@ -64,15 +63,6 @@ def can_pour(origin: int, target: int, flasks: Flasks, log_set: set) -> bool:
 
     # Case: Nothing to pour from
     if not origin_color:
-        return False
-
-    # Case 3: pouring already happened before
-    if (
-        origin,
-        origin_color,
-        target,
-        target_color,
-    ) in log_set:
         return False
 
     # Case: target is empty, then only pour when there is some other color left
@@ -91,7 +81,7 @@ def can_pour(origin: int, target: int, flasks: Flasks, log_set: set) -> bool:
     return True
 
 
-def pour(origin: int, target: int, flasks: Flasks, log: list, log_set: set):
+def pour(origin: int, target: int, flasks: Flasks, log: list):
     origin_color = flasks[origin].pop()
     if flasks[target]:
         target_color = flasks[target].pop()
@@ -125,10 +115,9 @@ def pour(origin: int, target: int, flasks: Flasks, log: list, log_set: set):
         target_color,
     )
     log.append(entry)
-    log_set.add(entry)
 
 
-def unpour(flasks: Flasks, log: list[Entry], log_set: set):
+def unpour(flasks: Flasks, log: list[Entry]):
     """
     >pour
     _   _           _   G
@@ -140,7 +129,6 @@ def unpour(flasks: Flasks, log: list[Entry], log_set: set):
 
     """
     entry = log.pop()
-    log_set.remove(entry)
     origin, origin_color, target, target_color = entry
 
     # restore origin, this handels residuals

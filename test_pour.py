@@ -6,37 +6,31 @@ from sorter import pour, Flasks, Flask, Color
 def test_pour_liquid_into_empty():
     flasks = [[Color("green", 1)], []]
     log = []
-    log_set = set(log)
 
-    pour(0, 1, flasks, log, log_set)
+    pour(0, 1, flasks, log)
 
     assert flasks == [[], [Color("green", 1)]]
     entry = (0, Color("green", 1), 1, None)
     assert log == [entry]
-    assert entry in log_set
 
 
 def test_pour_liquid_into_color():
     flasks = [[Color("green", 1)], [Color("green", 1)]]
     log = []
-    log_set = set(log)
 
-    pour(0, 1, flasks, log, log_set)
+    pour(0, 1, flasks, log)
 
     assert flasks == [[], [Color("green", 2)]]
     entry = (0, Color("green", 1), 1, Color("green", 1))
     assert log == [entry]
-    assert entry in log_set
 
 
 def test_pour_liquid_with_residual():
     flasks = [[Color("green", 3)], [Color("blue", 2), Color("green", 1)]]
     log = []
-    log_set = set(log)
 
-    pour(0, 1, flasks, log, log_set)
+    pour(0, 1, flasks, log)
 
     assert flasks == [[Color("green", 2)], [Color("blue", 2), Color("green", 2)]]
     entry = (0, Color("green", 3), 1, Color("green", 1))
     assert log == [entry]
-    assert entry in log_set
